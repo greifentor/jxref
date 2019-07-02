@@ -36,6 +36,7 @@ public class JXRefTest {
 		String path = "src/main/java/de/ollie";
 		Map<String, List<String>> expected = new HashMap<>();
 		expected.put("de.ollie.jxref.writer.JXRefConsoleWriterUnreferencedOnly", new ArrayList<>());
+		expected.put("de.ollie.jxref.JXRefParameter", Arrays.asList("de.ollie.jxref.JXRef"));
 		expected.put("de.ollie.jxref.writer.JXRefConsoleWriter", Arrays.asList("de.ollie.jxref.JXRef"));
 		expected.put("de.ollie.jxref.processor.JavaSourceFileProcessor", Arrays.asList("de.ollie.jxref.JXRef"));
 		expected.put("de.ollie.jxref.processor.JXRefJava8ListenerForPass2",
@@ -46,7 +47,7 @@ public class JXRefTest {
 		expected.put("de.ollie.jxref.JXRef",
 				Arrays.asList("de.ollie.jxref.JXRef", "de.ollie.jxref.unreferenced.Unreferenced"));
 		// Run
-		this.unitUnderTest.process(path, writer);
+		this.unitUnderTest.process(new JXRefParameter().setPath(path), writer);
 		// Check
 		verify(writer, times(1)).write(expected);
 	}

@@ -25,22 +25,23 @@ public class JXRef {
 			System.out.println("ERROR: Call with source path.");
 			return;
 		}
-		new JXRef().process(args[0], new JXRefConsoleWriter());
+		new JXRef().process(new JXRefParameter().setPath(args[0]).setVerbose(true), new JXRefConsoleWriter());
 	}
 
 	/**
 	 * Processes the passed path and writes the result to the passed writer.
 	 * 
-	 * @param path   The path where the source code is to read from.
-	 * @param writer The writer which is responsible for the output of the result.
+	 * @param jxrefParameter Some parameters for runtime.
+	 * @param writer         The writer which is responsible for the output of the
+	 *                       result.
 	 */
-	public void process(String path, JXRefWriter writer) {
+	public void process(JXRefParameter jxrefParameter, JXRefWriter writer) {
 		Map<String, List<String>> xreftable = new HashMap<>();
 		try {
 			System.out.println("\nPass 1");
-			buildXRef(1, new File(path), xreftable, new JavaSourceFileProcessor());
+			buildXRef(1, new File(jxrefParameter.getPath()), xreftable, new JavaSourceFileProcessor());
 			System.out.println("\nPass 2");
-			buildXRef(2, new File(path), xreftable, new JavaSourceFileProcessor());
+			buildXRef(2, new File(jxrefParameter.getPath()), xreftable, new JavaSourceFileProcessor());
 			System.out.println("\n\nResult");
 			writer.write(xreftable);
 		} catch (IOException e) {
