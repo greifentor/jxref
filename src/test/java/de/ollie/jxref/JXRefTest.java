@@ -38,8 +38,13 @@ public class JXRefTest {
 		expected.put("de.ollie.jxref.writer.JXRefConsoleWriterUnreferencedOnly", new ArrayList<>());
 		expected.put("de.ollie.jxref.JXRefParameterFactory", Arrays.asList("de.ollie.jxref.JXRef"));
 		expected.put("de.ollie.jxref.JXRefParameter",
-				Arrays.asList("de.ollie.jxref.JXRef", "de.ollie.jxref.JXRefParameterFactory"));
+				Arrays.asList("de.ollie.jxref.JXRef", "de.ollie.jxref.writer.JXRefConsoleWriter",
+						"de.ollie.jxref.writer.JXRefConsoleWriterUnreferencedOnly", "",
+						"de.ollie.jxref.JXRefParameterFactory"));
 		expected.put("de.ollie.jxref.writer.JXRefConsoleWriter", Arrays.asList("de.ollie.jxref.JXRef"));
+		expected.put("de.ollie.jxref.JXRefConsoleOutput",
+				Arrays.asList("de.ollie.jxref.JXRef", "de.ollie.jxref.writer.JXRefConsoleWriter",
+						"de.ollie.jxref.writer.JXRefConsoleWriterUnreferencedOnly"));
 		expected.put("de.ollie.jxref.processor.JavaSourceFileProcessor", Arrays.asList("de.ollie.jxref.JXRef"));
 		expected.put("de.ollie.jxref.processor.JXRefJava8ListenerForPass2",
 				Arrays.asList("de.ollie.jxref.processor.JavaSourceFileProcessor"));
@@ -51,7 +56,7 @@ public class JXRefTest {
 		// Run
 		this.unitUnderTest.process(new JXRefParameter().setPath(path), writer);
 		// Check
-		verify(writer, times(1)).write(expected);
+		verify(writer, times(1)).write(new JXRefParameter().setPath(path), expected);
 	}
 
 }
