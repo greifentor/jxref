@@ -20,6 +20,8 @@ import de.ollie.jxref.writer.JXRefWriter;
  */
 public class JXRef {
 
+	private static final JXRefConsoleOutput console = new JXRefConsoleOutput();
+
 	public static void main(String[] args) {
 		if (args.length < 1) {
 			System.out.println("ERROR: Call with source path.");
@@ -37,12 +39,12 @@ public class JXRef {
 	public void process(JXRefParameter jxrefParameter, JXRefWriter writer) {
 		Map<String, List<String>> xreftable = new HashMap<>();
 		try {
-			System.out.println("\nPass 1");
-			buildXRef(1, new File(jxrefParameter.getPath()), xreftable, new JavaSourceFileProcessor());
-			System.out.println("\nPass 2");
-			buildXRef(2, new File(jxrefParameter.getPath()), xreftable, new JavaSourceFileProcessor());
-			System.out.println("\n\nResult");
-			writer.write(xreftable);
+			console.printToConsole(jxrefParameter.isVerbose(), "\nPass 1");
+			buildXRef(1, new File(jxrefParameter.getPath()), xreftable, new JavaSourceFileProcessor(), jxrefParameter);
+			console.printToConsole(jxrefParameter.isVerbose(), "\nPass 2");
+			buildXRef(2, new File(jxrefParameter.getPath()), xreftable, new JavaSourceFileProcessor(), jxrefParameter);
+			console.printToConsole(jxrefParameter.isVerbose(), "\n\nResult");
+			writer.write(jxrefParameter, xreftable);
 		} catch (IOException e) {
 			System.out.println("ERROR: while reading source code file: " + e.getMessage());
 		}
@@ -52,21 +54,22 @@ public class JXRef {
 	 * Builds up the passed cross reference table for the passed file. If the file is a directory, all members will be
 	 * scanned (in case of other directories or Java files; anything else will be ignored).
 	 * 
-	 * @param pass      The number of the pass which is to run.
-	 * @param path      The source code path to process.
-	 * @param xreftable The cross reference table to build up.
-	 * @param processor A class which processes the source files and builds up the cross reference information.
+	 * @param pass           The number of the pass which is to run.
+	 * @param path           The source code path to process.
+	 * @param xreftable      The cross reference table to build up.
+	 * @param processor      A class which processes the source files and builds up the cross reference information.
+	 * @param jxrefParameter Some parameters for runtime.
 	 * @throw IOException If an error occurs while reading the source codes.
 	 */
-	public void buildXRef(int pass, File file, Map<String, List<String>> xreftable, JavaSourceFileProcessor processor)
-			throws IOException {
+	public void buildXRef(int pass, File file, Map<String, List<String>> xreftable, JavaSourceFileProcessor processor,
+			JXRefParameter jxrefParameter) throws IOException {
 		if (file.isDirectory()) {
 			for (File f : file.listFiles()) {
-				buildXRef(pass, f, xreftable, processor);
+				buildXRef(pass, f, xreftable, processor, jxrefParameter);
 			}
 		} else {
 			if (file.getAbsolutePath().toLowerCase().endsWith(".java")) {
-				System.out.println("processing: " + file.getAbsolutePath());
+				console.printToConsole(jxrefParameter.isVerbose(), "processing: " + file.getAbsolutePath());
 				String code = new String(Files.readAllBytes(Paths.get(file.getAbsolutePath())));
 				if (pass == 1) {
 					processor.processPass(1, xreftable, code);

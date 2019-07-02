@@ -10,10 +10,10 @@ Build project with `mvn clean install`.
 ## Run
 
 Run program e. g. from project folder with:
-`java -cp lib/antlr4-runtime-4.7.1.jar:target/jxref-0.0.1.jar de.ollie.jxref.JXRef <SOURCE-PATH>`
+`java -cp lib/antlr4-runtime-4.7.1.jar:target/jxref-0.0.1.jar de.ollie.jxref.JXRef -v <SOURCE-PATH>`
 
 Example:
-`java -cp lib/antlr4-runtime-4.7.1.jar:target/jxref-0.0.1.jar de.ollie.jxref.JXRef src/main/java/de/ollie` 
+`java -cp lib/antlr4-runtime-4.7.1.jar:target/jxref-0.0.1.jar de.ollie.jxref.JXRef -v src/main/java/de/ollie` 
 
 Change the slashes to back slashes and the ":" to ";" for using the application with windows.
 
@@ -21,7 +21,7 @@ Change the slashes to back slashes and the ":" to ";" for using the application 
 ## Todos
 
 
-o T011 - Activate the "verbose" option by command line parameter. Put regular output to nothing.
+x T011 - Activate the "verbose" option by command line parameter. Put regular output to nothing.
 
 o T010 - Allow more than one source path.
 
@@ -42,4 +42,4 @@ o T003 - Make the application working with "enum" and "interface" files also.
 o T002 - Make the JXRefWriter instance configurable which is to use.
 
 x T001 - Create a Class which reads the command line parameters into a JXRefParameter object.
-  `OLI 02.07.2019: Solved.` 
+  `OLI 02.07.2019: Solved.`
