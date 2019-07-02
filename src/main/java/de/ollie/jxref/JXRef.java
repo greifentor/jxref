@@ -25,15 +25,14 @@ public class JXRef {
 			System.out.println("ERROR: Call with source path.");
 			return;
 		}
-		new JXRef().process(new JXRefParameter().setPath(args[0]).setVerbose(true), new JXRefConsoleWriter());
+		new JXRef().process(new JXRefParameterFactory().create(args), new JXRefConsoleWriter());
 	}
 
 	/**
 	 * Processes the passed path and writes the result to the passed writer.
 	 * 
 	 * @param jxrefParameter Some parameters for runtime.
-	 * @param writer         The writer which is responsible for the output of the
-	 *                       result.
+	 * @param writer         The writer which is responsible for the output of the result.
 	 */
 	public void process(JXRefParameter jxrefParameter, JXRefWriter writer) {
 		Map<String, List<String>> xreftable = new HashMap<>();
@@ -50,15 +49,13 @@ public class JXRef {
 	}
 
 	/**
-	 * Builds up the passed cross reference table for the passed file. If the file
-	 * is a directory, all members will be scanned (in case of other directories or
-	 * Java files; anything else will be ignored).
+	 * Builds up the passed cross reference table for the passed file. If the file is a directory, all members will be
+	 * scanned (in case of other directories or Java files; anything else will be ignored).
 	 * 
 	 * @param pass      The number of the pass which is to run.
 	 * @param path      The source code path to process.
 	 * @param xreftable The cross reference table to build up.
-	 * @param processor A class which processes the source files and builds up the
-	 *                  cross reference information.
+	 * @param processor A class which processes the source files and builds up the cross reference information.
 	 * @throw IOException If an error occurs while reading the source codes.
 	 */
 	public void buildXRef(int pass, File file, Map<String, List<String>> xreftable, JavaSourceFileProcessor processor)
