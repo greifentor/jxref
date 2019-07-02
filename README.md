@@ -20,6 +20,7 @@ Change the slashes to back slashes and the ":" to ";" for using the application 
 
 ## Todos
 
+o T012 - Solve problem with empty class names in reference list.
 
 x T011 - Activate the "verbose" option by command line parameter. Put regular output to nothing.
   `OLI 02.07.2019: Solved.`
