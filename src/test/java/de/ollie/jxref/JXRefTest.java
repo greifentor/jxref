@@ -35,6 +35,7 @@ public class JXRefTest {
 		JXRefConsoleWriter writer = mock(JXRefConsoleWriter.class);
 		String path = "src/main/java/de/ollie";
 		Map<String, List<String>> expected = new HashMap<>();
+		expected.put("de.ollie.jxref.writer.JXRefConsoleWriterUnreferencedOnly", new ArrayList<>());
 		expected.put("de.ollie.jxref.writer.JXRefConsoleWriter", Arrays.asList("de.ollie.jxref.JXRef"));
 		expected.put("de.ollie.jxref.processor.JavaSourceFileProcessor", Arrays.asList("de.ollie.jxref.JXRef"));
 		expected.put("de.ollie.jxref.processor.JXRefJava8ListenerForPass2",

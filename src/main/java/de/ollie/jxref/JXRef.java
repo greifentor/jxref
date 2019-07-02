@@ -10,6 +10,7 @@ import java.util.Map;
 
 import de.ollie.jxref.processor.JavaSourceFileProcessor;
 import de.ollie.jxref.writer.JXRefConsoleWriter;
+import de.ollie.jxref.writer.JXRefWriter;
 
 /**
  * The main module of the Java cross reference tool.
@@ -29,15 +30,18 @@ public class JXRef {
 
 	/**
 	 * Processes the passed path and writes the result to the passed writer.
-	 *
+	 * 
 	 * @param path   The path where the source code is to read from.
 	 * @param writer The writer which is responsible for the output of the result.
 	 */
-	public void process(String path, JXRefConsoleWriter writer) {
+	public void process(String path, JXRefWriter writer) {
 		Map<String, List<String>> xreftable = new HashMap<>();
 		try {
+			System.out.println("\nPass 1");
 			buildXRef(1, new File(path), xreftable, new JavaSourceFileProcessor());
+			System.out.println("\nPass 2");
 			buildXRef(2, new File(path), xreftable, new JavaSourceFileProcessor());
+			System.out.println("\n\nResult");
 			writer.write(xreftable);
 		} catch (IOException e) {
 			System.out.println("ERROR: while reading source code file: " + e.getMessage());
@@ -45,13 +49,15 @@ public class JXRef {
 	}
 
 	/**
-	 * Builds up the passed cross reference table for the passed file. If the file is a directory, all members will be
-	 * scanned (in case of other directories or Java files; anything else will be ignored).
+	 * Builds up the passed cross reference table for the passed file. If the file
+	 * is a directory, all members will be scanned (in case of other directories or
+	 * Java files; anything else will be ignored).
 	 * 
 	 * @param pass      The number of the pass which is to run.
 	 * @param path      The source code path to process.
 	 * @param xreftable The cross reference table to build up.
-	 * @param processor A class which processes the source files and builds up the cross reference information.
+	 * @param processor A class which processes the source files and builds up the
+	 *                  cross reference information.
 	 * @throw IOException If an error occurs while reading the source codes.
 	 */
 	public void buildXRef(int pass, File file, Map<String, List<String>> xreftable, JavaSourceFileProcessor processor)

@@ -9,7 +9,7 @@ import java.util.Map;
  * @author ollie
  *
  */
-public class JXRefConsoleWriter implements JXRefWriter {
+public class JXRefConsoleWriterUnreferencedOnly implements JXRefWriter {
 
 	/**
 	 * Writes the passed cross reference table data to the console.
@@ -18,13 +18,18 @@ public class JXRefConsoleWriter implements JXRefWriter {
 	 */
 	@Override
 	public void write(Map<String, List<String>> xreftable) {
+		System.out.println("\n\nUnreferenced");
 		for (String className : xreftable.keySet()) {
-			System.out.println("\n" + className);
 			List<String> reference = xreftable.get(className);
+			int cnt = 0;
 			for (String referencedClassName : reference) {
 				if (!referencedClassName.equals(className)) {
-					System.out.println("    " + referencedClassName);
+					cnt++;
+					break;
 				}
+			}
+			if (cnt == 0) {
+				System.out.println(className);
 			}
 		}
 	}
