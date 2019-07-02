@@ -22,6 +22,7 @@ Change the slashes to back slashes and the ":" to ";" for using the application 
 
 
 x T011 - Activate the "verbose" option by command line parameter. Put regular output to nothing.
+  `OLI 02.07.2019: Solved.`
 
 o T010 - Allow more than one source path.
 
