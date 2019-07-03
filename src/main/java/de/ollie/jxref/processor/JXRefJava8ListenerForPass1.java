@@ -1,11 +1,8 @@
 package de.ollie.jxref.processor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import antlr.Java8BaseListener;
 import antlr.Java8Parser;
+import de.ollie.jxref.JXRefTable;
 
 /**
  * A listener for the parsing process in pass 1 (initializes the cross reference
@@ -14,15 +11,16 @@ import antlr.Java8Parser;
  * @author ollie
  */
 public class JXRefJava8ListenerForPass1 extends Java8BaseListener {
+
 	private String packageName = "";
-	private Map<String, List<String>> xreftable = null;
+	private JXRefTable xreftable = null;
 
 	/**
 	 * Creates a new JXRefJava8Listener with the passed parameters.
 	 *
 	 * @param xreftable The cross reference table which is to build up.
 	 */
-	public JXRefJava8ListenerForPass1(final Map<String, List<String>> xreftable) {
+	public JXRefJava8ListenerForPass1(final JXRefTable xreftable) {
 		super();
 		this.xreftable = xreftable;
 	}
@@ -34,8 +32,7 @@ public class JXRefJava8ListenerForPass1 extends Java8BaseListener {
 				final String token = ctx.normalClassDeclaration().getChild(i).getText();
 				if (token.equals("class")) {
 					final String className = ctx.normalClassDeclaration().getChild(i + 1).getText();
-					this.xreftable.put(((!this.packageName.isEmpty()) ? (packageName + ".") : "") + className,
-							new ArrayList<>());
+					this.xreftable.addClass(((!this.packageName.isEmpty()) ? (packageName + ".") : "") + className);
 					return;
 				}
 			}

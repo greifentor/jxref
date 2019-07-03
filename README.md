@@ -1,6 +1,12 @@
 # jxref
 A tool to get an cross reference table for a Java source code. First step will cover class usages only.
 
+The application creates a cross reference table from the Java source code and allows to process the result in a special 
+class which implements the interface `de.ollie.jxref.writer.JXRefWriter`.
+
+In the standard configuration the `de.ollie.jxref.writer.JXRefConsoleWriter` writes the cross reference table content to the
+console.
+
 
 ## Build
 
@@ -10,15 +16,31 @@ Build project with `mvn clean install`.
 ## Run
 
 Run program e. g. from project folder with:
-`java -cp lib/antlr4-runtime-4.7.1.jar:target/jxref-0.0.1.jar de.ollie.jxref.JXRef -v <SOURCE-PATH>`
+
+Call of JXRef: `<java-call> [Parameters] <SOURCE-PATH>`
+
+UX: `java -cp lib/antlr4-runtime-4.7.1.jar:target/jxref-0.0.1.jar de.ollie.jxref.JXRef -v <SOURCE-PATH>`
+
+Windows: `java -cp "lib\antlr4-runtime-4.7.1.jar;target\jxref-0.0.1.jar" de.ollie.jxref.JXRef -v <SOURCE-PATH>`
 
 Example:
-`java -cp lib/antlr4-runtime-4.7.1.jar:target/jxref-0.0.1.jar de.ollie.jxref.JXRef -v src/main/java/de/ollie` 
 
-Change the slashes to back slashes and the ":" to ";" for using the application with windows.
+UX: `java -cp lib/antlr4-runtime-4.7.1.jar:target/jxref-0.0.1.jar de.ollie.jxref.JXRef -v src/main/java/de/ollie`
+
+Windows: `java -cp "lib\antlr4-runtime-4.7.1.jar;target\jxref-0.0.1.jar" de.ollie.jxref.JXRef -v src\main\java\de\ollie`
+
+
+### Parameters
+
+The following parameters could be passed to a call of the JXRef tool:
+
+* **-v**, **--verbose** (verbose) - prints some output to the console.
 
 
 ## Todos
+
+x T013 - Change list of referencing class to a set (will cover order problem and uniqueness).
+  `OLI 03.07.2019: Solved.`
 
 o T012 - Solve problem with empty class names in reference list.
 
