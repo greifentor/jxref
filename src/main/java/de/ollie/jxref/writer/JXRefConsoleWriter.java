@@ -1,10 +1,10 @@
 package de.ollie.jxref.writer;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import de.ollie.jxref.JXRefConsoleOutput;
 import de.ollie.jxref.JXRefParameter;
+import de.ollie.jxref.JXRefTable;
 
 /**
  * A writer for cross reference table output to console.
@@ -23,10 +23,10 @@ public class JXRefConsoleWriter implements JXRefWriter {
 	 * @param xreftable      The cross reference table to write.
 	 */
 	@Override
-	public void write(JXRefParameter jxrefParameter, Map<String, List<String>> xreftable) {
-		for (String className : xreftable.keySet()) {
+	public void write(JXRefParameter jxrefParameter, JXRefTable xreftable) {
+		for (String className : xreftable.getClassNames()) {
 			console.printToConsole(jxrefParameter.isVerbose(), "\n" + className);
-			List<String> reference = xreftable.get(className);
+			Set<String> reference = xreftable.getReferencingClasses(className);
 			for (String referencedClassName : reference) {
 				if (!referencedClassName.equals(className)) {
 					console.printToConsole(jxrefParameter.isVerbose(), "    " + referencedClassName);

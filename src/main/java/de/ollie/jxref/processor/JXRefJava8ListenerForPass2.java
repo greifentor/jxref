@@ -1,13 +1,13 @@
 package de.ollie.jxref.processor;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import antlr.Java8BaseListener;
 import antlr.Java8Parser;
+import de.ollie.jxref.JXRefTable;
 
 /**
  * A listener for the parsing process in pass 2 (finds the references).
@@ -15,9 +15,10 @@ import antlr.Java8Parser;
  * @author ollie
  */
 public class JXRefJava8ListenerForPass2 extends Java8BaseListener {
+
 	private String className = "";
 	private String packageName = "";
-	private Map<String, List<String>> xreftable = null;
+	private JXRefTable xreftable = null;
 	private Map<String, String> importedClasses = new HashMap<>();
 
 	/**
@@ -25,13 +26,13 @@ public class JXRefJava8ListenerForPass2 extends Java8BaseListener {
 	 *
 	 * @param xreftable The cross reference table which is to build up.
 	 */
-	public JXRefJava8ListenerForPass2(final Map<String, List<String>> xreftable) {
+	public JXRefJava8ListenerForPass2(JXRefTable xreftable) {
 		super();
 		this.xreftable = xreftable;
 	}
 
 	@Override
-	public void enterClassDeclaration(final Java8Parser.ClassDeclarationContext ctx) {
+	public void enterClassDeclaration(Java8Parser.ClassDeclarationContext ctx) {
 		if (ctx.normalClassDeclaration() != null) {
 			for (int i = 0, leni = ctx.normalClassDeclaration().getChildCount(); i < leni; i++) {
 				final String token = ctx.normalClassDeclaration().getChild(i).getText();
@@ -67,22 +68,16 @@ public class JXRefJava8ListenerForPass2 extends Java8BaseListener {
 		for (int i = 0, leni = ctx.getChildCount(); i < leni; i++) {
 			if (ctx.getChild(i).getText().equals("new")) {
 				i++;
-
 				while (ctx.getChild(i).getText().startsWith("<") || ctx.getChild(i).getText().startsWith("@")) {
 					i++;
 				}
-
 				String className = ctx.getChild(i).getText();
 				className = this.importedClasses.get(className);
-
 				if (className != null) {
-					final List<String> references = this.xreftable.get(className);
-
-					if ((references != null) && !references.contains(this.className)) {
-						references.add(this.className);
+					if (this.xreftable.getReferencingClasses(className) != null) {
+						this.xreftable.addReferencingClass(className, this.className);
 					}
 				}
-
 				return;
 			}
 		}
@@ -92,11 +87,9 @@ public class JXRefJava8ListenerForPass2 extends Java8BaseListener {
 	public void enterSingleTypeImportDeclaration(final Java8Parser.SingleTypeImportDeclarationContext ctx) {
 		final String qualifiedClassName = ctx.getChild(1).getText();
 		String className = qualifiedClassName;
-
 		while (className.contains(".")) {
 			className = className.substring(className.indexOf(".") + 1);
 		}
-
 		this.importedClasses.put(className, qualifiedClassName);
 	}
 
@@ -105,7 +98,7 @@ public class JXRefJava8ListenerForPass2 extends Java8BaseListener {
 		if (this.packageName.isEmpty()) {
 			this.packageName = ctx.getText();
 
-			for (final String qualifiedClassName : this.xreftable.keySet()) {
+			for (final String qualifiedClassName : this.xreftable.getClassNames()) {
 				if (qualifiedClassName.startsWith(this.packageName)) {
 					String className = qualifiedClassName;
 
@@ -125,10 +118,8 @@ public class JXRefJava8ListenerForPass2 extends Java8BaseListener {
 		referencedClassName = this.importedClasses.get(referencedClassName);
 
 		if (referencedClassName != null) {
-			final List<String> references = this.xreftable.get(referencedClassName);
-
-			if ((references != null) && !references.contains(this.className)) {
-				references.add(this.className);
+			if (this.xreftable.getReferencingClasses(referencedClassName) != null) {
+				this.xreftable.addReferencingClass(referencedClassName, this.className);
 			}
 		}
 	}
