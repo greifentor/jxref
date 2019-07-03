@@ -8,6 +8,16 @@ In the standard configuration the `de.ollie.jxref.writer.JXRefConsoleWriter` wri
 console.
 
 
+## Limits
+
+To use JXRef with your source code properly its necessary to respect some requirements:
+
+- Imports should not end with a `*`. Import each class by a single import.
+- Avoid equal class names in different packages.
+- Currently static import will not be processed correctly.
+- Maybe not all calls are hit. We work on it :o)
+
+
 ## Build
 
 Build project with `mvn clean install`.
