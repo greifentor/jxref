@@ -26,6 +26,15 @@ public class JXRef {
 		}
 		JXRefParameter parameters = new JXRefParameterFactory().create(args);
 		JXRefWriter writer = new JXRefConsoleWriter();
+		if (parameters.getWriterClassName() != null) {
+			try {
+				writer = (JXRefWriter) Class.forName(parameters.getWriterClassName()).getDeclaredConstructor()
+						.newInstance();
+			} catch (Exception e) {
+				System.out.println("ERROR: Writer class cannot be instantiated: " + parameters.getWriterClassName());
+				System.out.println("WARN: using standard JXRefConsoleWriter!");
+			}
+		}
 		new JXRef().process(parameters, writer);
 	}
 
