@@ -24,6 +24,8 @@ public class JXRefParameterFactory {
 			String token = args[i];
 			if (token.equalsIgnoreCase("-v") || token.equalsIgnoreCase("--verbose")) {
 				jxref.setVerbose(true);
+			} else if (token.equalsIgnoreCase("-w") || token.equalsIgnoreCase("--writer")) {
+				jxref.setWriterClassName(args[++i]);
 			} else {
 				if (jxref.getPath() == null) {
 					jxref.setPath(token);
