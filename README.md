@@ -46,6 +46,8 @@ The following parameters could be passed to a call of the JXRef tool:
 
 * **-v**, **--verbose** (verbose) - prints some output to the console.
 
+* **-w**, **--writer** <class-name> (alternate writer) - uses the alternate writer defined by the passed class name.
+
 
 ## Todos
 
@@ -73,7 +75,8 @@ o T004 - "@RestController" should not be in the list of unreferenced classes. Ex
 
 o T003 - Make the application working with "enum" and "interface" files also.
 
-o T002 - Make the JXRefWriter instance configurable which is to use.
-
+x T002 - Make the JXRefWriter instance configurable which is to use.
+  `OLI 04.07.2019: Solved.`
+  
 x T001 - Create a Class which reads the command line parameters into a JXRefParameter object.
   `OLI 02.07.2019: Solved.`
