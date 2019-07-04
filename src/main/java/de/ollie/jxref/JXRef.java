@@ -24,15 +24,25 @@ public class JXRef {
 			System.out.println("ERROR: Call with source path.");
 			return;
 		}
-		new JXRef().process(new JXRefParameterFactory().create(args), new JXRefConsoleWriter());
+		JXRefParameter parameters = new JXRefParameterFactory().create(args);
+		JXRefWriter writer = new JXRefConsoleWriter();
+		if (parameters.getWriterClassName() != null) {
+			try {
+				writer = (JXRefWriter) Class.forName(parameters.getWriterClassName()).getDeclaredConstructor()
+						.newInstance();
+			} catch (Exception e) {
+				System.out.println("ERROR: Writer class cannot be instantiated: " + parameters.getWriterClassName());
+				System.out.println("WARN: using standard JXRefConsoleWriter!");
+			}
+		}
+		new JXRef().process(parameters, writer);
 	}
 
 	/**
 	 * Processes the passed path and writes the result to the passed writer.
 	 * 
 	 * @param jxrefParameter Some parameters for runtime.
-	 * @param writer         The writer which is responsible for the output of the
-	 *                       result.
+	 * @param writer         The writer which is responsible for the output of the result.
 	 */
 	public void process(JXRefParameter jxrefParameter, JXRefWriter writer) {
 		JXRefTable xreftable = new JXRefTable();
@@ -49,15 +59,13 @@ public class JXRef {
 	}
 
 	/**
-	 * Builds up the passed cross reference table for the passed file. If the file
-	 * is a directory, all members will be scanned (in case of other directories or
-	 * Java files; anything else will be ignored).
+	 * Builds up the passed cross reference table for the passed file. If the file is a directory, all members will be
+	 * scanned (in case of other directories or Java files; anything else will be ignored).
 	 * 
 	 * @param pass           The number of the pass which is to run.
 	 * @param path           The source code path to process.
 	 * @param xreftable      The cross reference table to build up.
-	 * @param processor      A class which processes the source files and builds up
-	 *                       the cross reference information.
+	 * @param processor      A class which processes the source files and builds up the cross reference information.
 	 * @param jxrefParameter Some parameters for runtime.
 	 * @throw IOException If an error occurs while reading the source codes.
 	 */

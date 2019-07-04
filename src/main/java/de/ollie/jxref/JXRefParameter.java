@@ -15,6 +15,7 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 public class JXRefParameter {
 
+	private String writerClassName;
 	private String path;
 	private boolean verbose;
 

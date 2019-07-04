@@ -60,6 +60,30 @@ public class JXRefParameterFactoryTest {
 	}
 
 	@Test
+	public void create_PassAnArrayWithSetWriterFlagShortForm_ReturnsAJXRefParametersObjectWithWriterConfigurationSet() {
+		// Prepare
+		String writerClassName = "writer.Class";
+		JXRefParameter expected = new JXRefParameter().setWriterClassName(writerClassName);
+		String[] args = new String[] { "-w", writerClassName };
+		// Run
+		JXRefParameter returned = this.unitUnderTest.create(args);
+		// Check
+		assertThat(returned, equalTo(expected));
+	}
+
+	@Test
+	public void create_PassAnArrayWithSetWriterFlagLongForm_ReturnsAJXRefParametersObjectWithWriterConfigurationSet() {
+		// Prepare
+		String writerClassName = "writer.Class";
+		JXRefParameter expected = new JXRefParameter().setWriterClassName(writerClassName);
+		String[] args = new String[] { "--writer", writerClassName };
+		// Run
+		JXRefParameter returned = this.unitUnderTest.create(args);
+		// Check
+		assertThat(returned, equalTo(expected));
+	}
+
+	@Test
 	public void create_PassAnArrayWithSetSourcePath_ReturnsAJXRefParametersObjectWithSourcePathSet() {
 		// Prepare
 		String sourcePath = "a/source/path";

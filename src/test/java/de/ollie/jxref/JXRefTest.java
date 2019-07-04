@@ -1,8 +1,11 @@
 package de.ollie.jxref;
 
+import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+
+import static org.hamcrest.Matchers.equalTo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import de.ollie.jxref.writer.JXRefConsoleWriter;
+import de.ollie.jxref.writer.JXRefWriter;
 
 /**
  * An integration test for "JXRef".
@@ -64,6 +68,34 @@ public class JXRefTest {
 		this.unitUnderTest.process(new JXRefParameter().setPath(path).setVerbose(true), writer);
 		// Check
 		verify(writer, times(1)).write(new JXRefParameter().setPath(path).setVerbose(true), expected);
+	}
+
+	@Test
+	public void main_PassAlternateWriter_CallsTheAlternateWriter() {
+		// Prepare
+		String[] args = new String[] { "src/main/java/de/ollie/jxref/unreferenced", "-v", "-w",
+				"de.ollie.jxref.AlternateJXRefWriter" };
+		// Run
+		JXRef.main(args);
+		// Check
+		assertThat(AlternateJXRefWriter.created, equalTo(1));
+	}
+
+}
+
+class AlternateJXRefWriter implements JXRefWriter {
+
+	public boolean called = false;
+	public static int created = 0;
+
+	public AlternateJXRefWriter() {
+		super();
+		created++;
+	}
+
+	@Override
+	public void write(JXRefParameter jxrefParameter, JXRefTable xreftable) {
+		this.called = true;
 	}
 
 }
