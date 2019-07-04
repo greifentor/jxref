@@ -6,7 +6,7 @@ import de.ollie.jxref.JXRefTable;
 /**
  * An interface for writers of JXRef results.
  * 
- * @author Oliver.Lieshoff
+ * @author ollie
  *
  */
 public interface JXRefWriter {

@@ -14,7 +14,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 /**
  * A class which represents a cross reference table.
  * 
- * @author Oliver.Lieshoff
+ * @author ollie
  *
  */
 public class JXRefTable {
@@ -35,14 +35,11 @@ public class JXRefTable {
 	}
 
 	/**
-	 * Adds the passed referencing class name to the referencing class names of the
-	 * class with the passed name.
+	 * Adds the passed referencing class name to the referencing class names of the class with the passed name.
 	 * 
-	 * @param className            The name of the class which the referencing class
-	 *                             name is to add.
+	 * @param className            The name of the class which the referencing class name is to add.
 	 * @param referencingClassName The name of the referencing class to add.
-	 * @return "true" if the referencing class name is added successfully, "false"
-	 *         otherwise.
+	 * @return "true" if the referencing class name is added successfully, "false" otherwise.
 	 */
 	public boolean addReferencingClass(String className, String referencingClassName) {
 		if ((className == null) || (referencingClassName == null)) {
@@ -74,11 +71,9 @@ public class JXRefTable {
 	/**
 	 * Returns the classes referencing the class with the passed name.
 	 * 
-	 * @param className The name of the class whose referencing classes are to
-	 *                  return.
-	 * @return The classes referencing the class with the passed name or "null" if a
-	 *         "null" value is passed or no data are stored for the passed class
-	 *         name.
+	 * @param className The name of the class whose referencing classes are to return.
+	 * @return The classes referencing the class with the passed name or "null" if a "null" value is passed or no data
+	 *         are stored for the passed class name.
 	 */
 	public Set<String> getReferencingClasses(String className) {
 		if ((className == null) || !this.data.containsKey(className)) {

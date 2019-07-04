@@ -18,7 +18,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 /**
  * Unit tests for class "JXRefTable".
  *
- * @author Oliver.Lieshoff
+ * @author ollie
  *
  */
 @RunWith(MockitoJUnitRunner.class)

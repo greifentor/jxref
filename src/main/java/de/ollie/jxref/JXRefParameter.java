@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 /**
  * A container for runtime parameters of JXRef.
  *
- * @author Oliver.Lieshoff
+ * @author ollie
  *
  */
 @Accessors(chain = true)
