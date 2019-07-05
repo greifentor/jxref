@@ -52,6 +52,8 @@ The following parameters could be passed to a call of the JXRef tool:
 
 ## Todos
 
+o T014 - References by casts should be processed correctly.
+
 x T013 - Change list of referencing class to a set (will cover order problem and uniqueness).
   `OLI 03.07.2019: Solved.`
 
@@ -70,7 +72,8 @@ o T008 - Check if application works for inner classes and friend classes which a
 
 o T007 - "@Service" & "@Component" classes should not be in the list of unreferenced classes if an interface is implemented which is referenced (JXRefConsoleWriterUnreferencedOnly).
 
-o T006 - Check if application handles class castings correctly.
+x T006 - Check if application handles class castings correctly.
+  `OLI: 05.07.2019: Does not work. Should be solved with T014.`
 
 o T005 - Classes with a "main" method should not be in the list of unreferenced classes (JXRefConsoleWriterUnreferencedOnly).
 

@@ -1,6 +1,7 @@
 package testdata;
 
 import testdata.referenced.ReferencedClass;
+import testdata.referenced.ReferencedClassByCast;
 import testdata.referenced.ReferencedEnum;
 import testdata.referenced.ReferencedEnumById;
 import testdata.referenced.ReferencedInterface;
@@ -14,6 +15,10 @@ public class MainClass {
 	public void main(String[] args) {
 		new MainClass();
 		new ReferencedClass().aMethodWithEnumParamater(ReferencedEnumById.IDENTIFIER);
+	}
+
+	public void methodWithCast(Object o) {
+		((ReferencedClassByCast) o).aMethod();
 	}
 
 }
