@@ -117,7 +117,7 @@ public class JXRefParameterFactoryTest {
 	public void create_PassAnArrayWithSetSourcePath_ReturnsAJXRefParametersObjectWithSourcePathSet() {
 		// Prepare
 		String sourcePath = "a/source/path";
-		JXRefParameter expected = new JXRefParameter().setPath(sourcePath);
+		JXRefParameter expected = new JXRefParameter().setPathes(Arrays.asList(sourcePath));
 		String[] args = new String[] { sourcePath };
 		// Run
 		JXRefParameter returned = this.unitUnderTest.create(args);
@@ -125,14 +125,30 @@ public class JXRefParameterFactoryTest {
 		assertThat(returned, equalTo(expected));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void create_PassAnArrayWithTwoSourcePathes_ReturnsAJXRefParametersObjectWithSourcePathSet() {
 		// Prepare
 		String sourcePath1 = "a/source/path1";
 		String sourcePath2 = "a/source/path2";
+		JXRefParameter expected = new JXRefParameter().setPathes(Arrays.asList(sourcePath1, sourcePath2));
 		String[] args = new String[] { sourcePath1, sourcePath2 };
 		// Run
-		this.unitUnderTest.create(args);
+		JXRefParameter returned = this.unitUnderTest.create(args);
+		// Check
+		assertThat(returned, equalTo(expected));
+	}
+
+	@Test
+	public void create_PassAnArrayWithTwoEqualSourcePathes_ReturnsAJXRefParametersObjectWithSourcePathSetOnceOnly() {
+		// Prepare
+		String sourcePath1 = "a/source/path";
+		String sourcePath2 = "a/source/path";
+		JXRefParameter expected = new JXRefParameter().setPathes(Arrays.asList(sourcePath1));
+		String[] args = new String[] { sourcePath1, sourcePath2 };
+		// Run
+		JXRefParameter returned = this.unitUnderTest.create(args);
+		// Check
+		assertThat(returned, equalTo(expected));
 	}
 
 }

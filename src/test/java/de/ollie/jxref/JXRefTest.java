@@ -1,5 +1,6 @@
 package de.ollie.jxref;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -69,9 +70,10 @@ public class JXRefTest {
 		expected.addReferencingClass("de.ollie.jxref.JXRef", "de.ollie.jxref.JXRef");
 		expected.addReferencingClass("de.ollie.jxref.JXRef", "de.ollie.jxref.unreferenced.Unreferenced");
 		// Run
-		this.unitUnderTest.process(new JXRefParameter().setPath(path).setVerbose(true), Arrays.asList(writer));
+		this.unitUnderTest.process(new JXRefParameter().setPathes(Arrays.asList(path)).setVerbose(true),
+				Arrays.asList(writer));
 		// Check
-		verify(writer, times(1)).write(new JXRefParameter().setPath(path).setVerbose(true), expected);
+		verify(writer, times(1)).write(new JXRefParameter().setPathes(Arrays.asList(path)).setVerbose(true), expected);
 	}
 
 	@Test
@@ -88,9 +90,31 @@ public class JXRefTest {
 		expected.addReferencingClass("testdata.referenced.ReferencedInterface", "testdata.MainClass");
 		expected.addClass("testdata.unreferenced.UnreferencedClass");
 		// Run
-		this.unitUnderTest.process(new JXRefParameter().setPath(path).setVerbose(true), Arrays.asList(writer));
+		this.unitUnderTest.process(new JXRefParameter().setPathes(Arrays.asList(path)).setVerbose(true),
+				Arrays.asList(writer));
 		// Check
-		verify(writer, times(1)).write(new JXRefParameter().setPath(path).setVerbose(true), expected);
+		verify(writer, times(1)).write(new JXRefParameter().setPathes(Arrays.asList(path)).setVerbose(true), expected);
+	}
+
+	@Test
+	public void process_PassMultipleTestPathes_BuildsUpTheCrossReferencesAndPutItToTheWriter() {
+		// Prepare
+		TestWriter writer = new TestWriter();
+		String path0 = "src/test/java/testdata/referenced";
+		String path1 = "src/test/java/testdata/unreferenced";
+		JXRefTable expected = new JXRefTable();
+		expected.addReferencingClass("testdata.referenced.ReferencedClass", "");
+		expected.addReferencingClass("testdata.referenced.ReferencedEnum", "");
+		expected.addReferencingClass("testdata.referenced.ReferencedEnumById", "testdata.referenced.ReferencedClass");
+		expected.addReferencingClass("testdata.referenced.ReferencedInterface", "");
+		expected.addClass("testdata.unreferenced.UnreferencedClass");
+		// Run
+		this.unitUnderTest.process(new JXRefParameter().setPathes(Arrays.asList(path0, path1)).setVerbose(true),
+				Arrays.asList(writer));
+		// Check
+//		verify(writer, times(1)).write(new JXRefParameter().setPathes(Arrays.asList(path0, path1)).setVerbose(true),
+//				expected);
+		assertEquals(writer.getJXRefTable().toString(), expected.toString());
 	}
 
 	@Test
@@ -152,6 +176,21 @@ class AnotherAlternateJXRefWriter implements JXRefWriter {
 	@Override
 	public void write(JXRefParameter jxrefParameter, JXRefTable xreftable) {
 		this.called = true;
+	}
+
+}
+
+class TestWriter implements JXRefWriter {
+
+	private JXRefTable jxrefTable;
+
+	public JXRefTable getJXRefTable() {
+		return this.jxrefTable;
+	}
+
+	@Override
+	public void write(JXRefParameter jxrefParameter, JXRefTable xreftable) {
+		this.jxrefTable = xreftable;
 	}
 
 }
