@@ -62,7 +62,8 @@ x T011 - Activate the "verbose" option by command line parameter. Put regular ou
 
 o T010 - Allow more than one source path.
 
-o T009 - Allow more than one writer.
+x T009 - Allow more than one writer.
+  `OLI: 05.07.2019: Solved.`
 
 o T008 - Check if application works for inner classes and friend classes which are stored in a class file of another public class.
 

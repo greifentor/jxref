@@ -4,6 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import de.ollie.jxref.processor.JavaSourceFileProcessor;
 import de.ollie.jxref.writer.JXRefConsoleWriter;
@@ -25,26 +28,28 @@ public class JXRef {
 			return;
 		}
 		JXRefParameter parameters = new JXRefParameterFactory().create(args);
-		JXRefWriter writer = new JXRefConsoleWriter();
-		if (parameters.getWriterClassName() != null) {
-			try {
-				writer = (JXRefWriter) Class.forName(parameters.getWriterClassName()).getDeclaredConstructor()
-						.newInstance();
-			} catch (Exception e) {
-				System.out.println("ERROR: Writer class cannot be instantiated: " + parameters.getWriterClassName());
-				System.out.println("WARN: using standard JXRefConsoleWriter!");
+		List<JXRefWriter> writers = Arrays.asList(new JXRefConsoleWriter());
+		if (!parameters.getWriterClassNames().isEmpty()) {
+			writers = new ArrayList<>();
+			for (String writerClassName : parameters.getWriterClassNames()) {
+				try {
+					writers.add((JXRefWriter) Class.forName(writerClassName).getDeclaredConstructor().newInstance());
+				} catch (Exception e) {
+					System.out.println("ERROR: Writer class cannot be instantiated: " + writerClassName);
+					System.out.println("WARN: using standard JXRefConsoleWriter!");
+				}
 			}
 		}
-		new JXRef().process(parameters, writer);
+		new JXRef().process(parameters, writers);
 	}
 
 	/**
 	 * Processes the passed path and writes the result to the passed writer.
 	 * 
 	 * @param jxrefParameter Some parameters for runtime.
-	 * @param writer         The writer which is responsible for the output of the result.
+	 * @param writers        The writers which are responsible for the output of the result.
 	 */
-	public void process(JXRefParameter jxrefParameter, JXRefWriter writer) {
+	public void process(JXRefParameter jxrefParameter, List<JXRefWriter> writers) {
 		JXRefTable xreftable = new JXRefTable();
 		try {
 			console.printToConsole(jxrefParameter.isVerbose(), "\nPass 1");
@@ -52,7 +57,9 @@ public class JXRef {
 			console.printToConsole(jxrefParameter.isVerbose(), "\nPass 2");
 			buildXRef(2, new File(jxrefParameter.getPath()), xreftable, new JavaSourceFileProcessor(), jxrefParameter);
 			console.printToConsole(jxrefParameter.isVerbose(), "\n\nResult");
-			writer.write(jxrefParameter, xreftable);
+			for (JXRefWriter writer : writers) {
+				writer.write(jxrefParameter, xreftable);
+			}
 		} catch (IOException e) {
 			System.out.println("ERROR: while reading source code file: " + e.getMessage());
 		}
