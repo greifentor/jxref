@@ -68,13 +68,13 @@ x T009 - Allow more than one writer.
 
 o T008 - Check if application works for inner classes and friend classes which are stored in a class file of another public class.
 
-o T007 - "@Service" & "@Component" classes should not be in the list of unreferenced classes if an interface is implemented which is referenced.
+o T007 - "@Service" & "@Component" classes should not be in the list of unreferenced classes if an interface is implemented which is referenced (JXRefConsoleWriterUnreferencedOnly).
 
 o T006 - Check if application handles class castings correctly.
 
-o T005 - Classes with a "main" method should not be in the list of unreferenced classes.
+o T005 - Classes with a "main" method should not be in the list of unreferenced classes (JXRefConsoleWriterUnreferencedOnly).
 
-o T004 - "@RestController" should not be in the list of unreferenced classes. Extend the stored information per class with a type of annotation.
+o T004 - "@RestController" should not be in the list of unreferenced classes. Extend the stored information per class with a type of annotation (JXRefConsoleWriterUnreferencedOnly).
 
 x T003 - Make the application working with "enum" and "interface" files also.
   `OLI 05.07.2019: Solved.`
