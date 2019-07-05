@@ -2,6 +2,8 @@ package de.ollie.jxref;
 
 import static org.junit.Assert.assertThat;
 
+import java.util.Arrays;
+
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.nullValue;
 
@@ -63,7 +65,7 @@ public class JXRefParameterFactoryTest {
 	public void create_PassAnArrayWithSetWriterFlagShortForm_ReturnsAJXRefParametersObjectWithWriterConfigurationSet() {
 		// Prepare
 		String writerClassName = "writer.Class";
-		JXRefParameter expected = new JXRefParameter().setWriterClassName(writerClassName);
+		JXRefParameter expected = new JXRefParameter().setWriterClassNames(Arrays.asList(writerClassName));
 		String[] args = new String[] { "-w", writerClassName };
 		// Run
 		JXRefParameter returned = this.unitUnderTest.create(args);
@@ -75,8 +77,36 @@ public class JXRefParameterFactoryTest {
 	public void create_PassAnArrayWithSetWriterFlagLongForm_ReturnsAJXRefParametersObjectWithWriterConfigurationSet() {
 		// Prepare
 		String writerClassName = "writer.Class";
-		JXRefParameter expected = new JXRefParameter().setWriterClassName(writerClassName);
+		JXRefParameter expected = new JXRefParameter().setWriterClassNames(Arrays.asList(writerClassName));
 		String[] args = new String[] { "--writer", writerClassName };
+		// Run
+		JXRefParameter returned = this.unitUnderTest.create(args);
+		// Check
+		assertThat(returned, equalTo(expected));
+	}
+
+	@Test
+	public void create_PassAnArrayWithMultipleSetWriters_ReturnsAJXRefParametersObjectWithWriterConfigurationSet() {
+		// Prepare
+		String writerClassName0 = "writer.Class";
+		String writerClassName1 = "writer.AnotherClass";
+		JXRefParameter expected = new JXRefParameter()
+				.setWriterClassNames(Arrays.asList(writerClassName0, writerClassName1));
+		String[] args = new String[] { "-w", writerClassName0, "--writer", writerClassName1 };
+		// Run
+		JXRefParameter returned = this.unitUnderTest.create(args);
+		// Check
+		assertThat(returned, equalTo(expected));
+	}
+
+	@Test
+	public void create_PassAnArrayWithSameWriterTwoTimes_ReturnsAJXRefParametersObjectWithWriterConfigurationSetWriterContainedTwoTimes() {
+		// Prepare
+		String writerClassName0 = "writer.Class";
+		String writerClassName1 = "writer.Class";
+		JXRefParameter expected = new JXRefParameter()
+				.setWriterClassNames(Arrays.asList(writerClassName0, writerClassName1));
+		String[] args = new String[] { "--writer", writerClassName0, "-w", writerClassName1 };
 		// Run
 		JXRefParameter returned = this.unitUnderTest.create(args);
 		// Check

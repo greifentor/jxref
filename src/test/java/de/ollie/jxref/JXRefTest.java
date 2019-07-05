@@ -5,6 +5,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import java.util.Arrays;
+
 import static org.hamcrest.Matchers.equalTo;
 
 import org.junit.Ignore;
@@ -67,7 +69,7 @@ public class JXRefTest {
 		expected.addReferencingClass("de.ollie.jxref.JXRef", "de.ollie.jxref.JXRef");
 		expected.addReferencingClass("de.ollie.jxref.JXRef", "de.ollie.jxref.unreferenced.Unreferenced");
 		// Run
-		this.unitUnderTest.process(new JXRefParameter().setPath(path).setVerbose(true), writer);
+		this.unitUnderTest.process(new JXRefParameter().setPath(path).setVerbose(true), Arrays.asList(writer));
 		// Check
 		verify(writer, times(1)).write(new JXRefParameter().setPath(path).setVerbose(true), expected);
 	}
@@ -86,7 +88,7 @@ public class JXRefTest {
 		expected.addReferencingClass("testdata.referenced.ReferencedInterface", "testdata.MainClass");
 		expected.addClass("testdata.unreferenced.UnreferencedClass");
 		// Run
-		this.unitUnderTest.process(new JXRefParameter().setPath(path).setVerbose(true), writer);
+		this.unitUnderTest.process(new JXRefParameter().setPath(path).setVerbose(true), Arrays.asList(writer));
 		// Check
 		verify(writer, times(1)).write(new JXRefParameter().setPath(path).setVerbose(true), expected);
 	}
@@ -94,12 +96,28 @@ public class JXRefTest {
 	@Test
 	public void main_PassAlternateWriter_CallsTheAlternateWriter() {
 		// Prepare
+		AlternateJXRefWriter.created = 0;
 		String[] args = new String[] { "src/main/java/de/ollie/jxref/unreferenced", "-v", "-w",
 				"de.ollie.jxref.AlternateJXRefWriter" };
 		// Run
 		JXRef.main(args);
 		// Check
 		assertThat(AlternateJXRefWriter.created, equalTo(1));
+	}
+
+	@Test
+	public void main_PassAlternateWriters_CallsTheAlternateWriters() {
+		// Prepare
+		AlternateJXRefWriter.created = 0;
+		AnotherAlternateJXRefWriter.created = 0;
+		String[] args = new String[] { "src/main/java/de/ollie/jxref/unreferenced", "-v", "-w",
+				"de.ollie.jxref.AlternateJXRefWriter", "--writer", "de.ollie.jxref.AnotherAlternateJXRefWriter", "-w",
+				"de.ollie.jxref.AlternateJXRefWriter" };
+		// Run
+		JXRef.main(args);
+		// Check
+		assertThat(AlternateJXRefWriter.created, equalTo(2));
+		assertThat(AnotherAlternateJXRefWriter.created, equalTo(1));
 	}
 
 }
@@ -110,6 +128,23 @@ class AlternateJXRefWriter implements JXRefWriter {
 	public static int created = 0;
 
 	public AlternateJXRefWriter() {
+		super();
+		created++;
+	}
+
+	@Override
+	public void write(JXRefParameter jxrefParameter, JXRefTable xreftable) {
+		this.called = true;
+	}
+
+}
+
+class AnotherAlternateJXRefWriter implements JXRefWriter {
+
+	public boolean called = false;
+	public static int created = 0;
+
+	public AnotherAlternateJXRefWriter() {
 		super();
 		created++;
 	}
