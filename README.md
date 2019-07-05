@@ -74,7 +74,7 @@ o T005 - Classes with a "main" method should not be in the list of unreferenced 
 
 o T004 - "@RestController" should not be in the list of unreferenced classes. Extend the stored information per class with a type of annotation.
 
-o T003 - Make the application working with "enum" and "interface" files also.
+x T003 - Make the application working with "enum" and "interface" files also.
   `OLI 05.07.2019: Solved.`
 
 x T002 - Make the JXRefWriter instance configurable which is to use.
