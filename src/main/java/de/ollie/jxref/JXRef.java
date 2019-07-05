@@ -53,9 +53,13 @@ public class JXRef {
 		JXRefTable xreftable = new JXRefTable();
 		try {
 			console.printToConsole(jxrefParameter.isVerbose(), "\nPass 1");
-			buildXRef(1, new File(jxrefParameter.getPath()), xreftable, new JavaSourceFileProcessor(), jxrefParameter);
+			for (String path : jxrefParameter.getPathes()) {
+				buildXRef(1, new File(path), xreftable, new JavaSourceFileProcessor(), jxrefParameter);
+			}
 			console.printToConsole(jxrefParameter.isVerbose(), "\nPass 2");
-			buildXRef(2, new File(jxrefParameter.getPath()), xreftable, new JavaSourceFileProcessor(), jxrefParameter);
+			for (String path : jxrefParameter.getPathes()) {
+				buildXRef(2, new File(path), xreftable, new JavaSourceFileProcessor(), jxrefParameter);
+			}
 			console.printToConsole(jxrefParameter.isVerbose(), "\n\nResult");
 			for (JXRefWriter writer : writers) {
 				writer.write(jxrefParameter, xreftable);

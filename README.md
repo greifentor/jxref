@@ -60,7 +60,8 @@ o T012 - Solve problem with empty class names in reference list.
 x T011 - Activate the "verbose" option by command line parameter. Put regular output to nothing.
   `OLI 02.07.2019: Solved.`
 
-o T010 - Allow more than one source path.
+x T010 - Allow more than one source path.
+  `OLI: 05.07.2019: Solved.`
 
 x T009 - Allow more than one writer.
   `OLI: 05.07.2019: Solved.`

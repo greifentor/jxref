@@ -27,10 +27,8 @@ public class JXRefParameterFactory {
 			} else if (token.equalsIgnoreCase("-w") || token.equalsIgnoreCase("--writer")) {
 				jxref.getWriterClassNames().add(args[++i]);
 			} else {
-				if (jxref.getPath() == null) {
-					jxref.setPath(token);
-				} else {
-					throw new IllegalArgumentException("Path is already set.");
+				if (!jxref.getPathes().contains(token)) {
+					jxref.getPathes().add(token);
 				}
 			}
 		}

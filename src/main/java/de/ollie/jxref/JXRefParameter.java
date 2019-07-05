@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
 public class JXRefParameter {
 
 	private List<String> writerClassNames = new ArrayList<>();
-	private String path;
+	private List<String> pathes = new ArrayList<>();
 	private boolean verbose;
 
 }
