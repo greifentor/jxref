@@ -69,6 +69,7 @@ public class JXRefTest {
 				"de.ollie.jxref.processor.JavaSourceFileProcessor");
 		expected.addReferencingClass("de.ollie.jxref.JXRef", "de.ollie.jxref.JXRef");
 		expected.addReferencingClass("de.ollie.jxref.JXRef", "de.ollie.jxref.unreferenced.Unreferenced");
+		expected.addClass("testdata.referenced.ReferencedClassByCast");
 		// Run
 		this.unitUnderTest.process(new JXRefParameter().setPathes(Arrays.asList(path)).setVerbose(true),
 				Arrays.asList(writer));
@@ -88,6 +89,7 @@ public class JXRefTest {
 		expected.addReferencingClass("testdata.referenced.ReferencedEnumById", "testdata.referenced.ReferencedClass");
 		expected.addReferencingClass("testdata.referenced.ReferencedEnumById", "testdata.MainClass");
 		expected.addReferencingClass("testdata.referenced.ReferencedInterface", "testdata.MainClass");
+		expected.addClass("testdata.referenced.ReferencedClassByCast");
 		expected.addClass("testdata.unreferenced.UnreferencedClass");
 		// Run
 		this.unitUnderTest.process(new JXRefParameter().setPathes(Arrays.asList(path)).setVerbose(true),
@@ -107,6 +109,7 @@ public class JXRefTest {
 		expected.addReferencingClass("testdata.referenced.ReferencedEnum", "");
 		expected.addReferencingClass("testdata.referenced.ReferencedEnumById", "testdata.referenced.ReferencedClass");
 		expected.addReferencingClass("testdata.referenced.ReferencedInterface", "");
+		expected.addClass("testdata.referenced.ReferencedClassByCast");
 		expected.addClass("testdata.unreferenced.UnreferencedClass");
 		// Run
 		this.unitUnderTest.process(new JXRefParameter().setPathes(Arrays.asList(path0, path1)).setVerbose(true),
