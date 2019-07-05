@@ -15,6 +15,7 @@ To use JXRef with your source code properly its necessary to respect some requir
 - Imports should not end with a `*`. Import each class by a single import.
 - Avoid equal class names in different packages.
 - Currently static import will not be processed correctly.
+- Does not scan for unused variables.
 - Maybe not all calls are hit. We work on it :o)
 
 

@@ -80,6 +80,10 @@ public class JXRefTest {
 		JXRefTable expected = new JXRefTable();
 		expected.addReferencingClass("testdata.MainClass", "testdata.MainClass");
 		expected.addReferencingClass("testdata.referenced.ReferencedClass", "testdata.MainClass");
+		expected.addReferencingClass("testdata.referenced.ReferencedEnum", "testdata.MainClass");
+		expected.addReferencingClass("testdata.referenced.ReferencedEnumById", "testdata.referenced.ReferencedClass");
+		expected.addReferencingClass("testdata.referenced.ReferencedEnumById", "testdata.MainClass");
+		expected.addReferencingClass("testdata.referenced.ReferencedInterface", "testdata.MainClass");
 		expected.addClass("testdata.unreferenced.UnreferencedClass");
 		// Run
 		this.unitUnderTest.process(new JXRefParameter().setPath(path).setVerbose(true), writer);

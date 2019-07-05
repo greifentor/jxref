@@ -42,6 +42,15 @@ public class JXRefJava8ListenerForPass2 extends Java8BaseListener {
 					return;
 				}
 			}
+		} else if (ctx.enumDeclaration() != null) {
+			for (int i = 0, leni = ctx.enumDeclaration().getChildCount(); i < leni; i++) {
+				final String token = ctx.enumDeclaration().getChild(i).getText();
+				if (token.equals("enum")) {
+					this.className = ((!this.packageName.isEmpty()) ? (packageName + ".") : "")
+							+ ctx.enumDeclaration().getChild(i + 1).getText();
+					return;
+				}
+			}
 		} else {
 			System.out.println("- ignored");
 		}
@@ -62,6 +71,22 @@ public class JXRefJava8ListenerForPass2 extends Java8BaseListener {
 	public void enterClassInstanceCreationExpression_lfno_primary(
 			final Java8Parser.ClassInstanceCreationExpression_lfno_primaryContext ctx) {
 		processClassInstanceCreationExpression(ctx);
+	}
+
+	@Override
+	public void enterInterfaceDeclaration(Java8Parser.InterfaceDeclarationContext ctx) {
+		if (ctx.normalInterfaceDeclaration() != null) {
+			for (int i = 0, leni = ctx.normalInterfaceDeclaration().getChildCount(); i < leni; i++) {
+				final String token = ctx.normalInterfaceDeclaration().getChild(i).getText();
+				if (token.equals("interface")) {
+					this.className = ((!this.packageName.isEmpty()) ? (packageName + ".") : "")
+							+ ctx.normalInterfaceDeclaration().getChild(i + 1).getText();
+					return;
+				}
+			}
+		} else {
+			System.out.println("- ignored");
+		}
 	}
 
 	private void processClassInstanceCreationExpression(final ParserRuleContext ctx) {
@@ -116,11 +141,24 @@ public class JXRefJava8ListenerForPass2 extends Java8BaseListener {
 	public void enterUnannReferenceType(final Java8Parser.UnannReferenceTypeContext ctx) {
 		String referencedClassName = ctx.getText();
 		referencedClassName = this.importedClasses.get(referencedClassName);
-
 		if (referencedClassName != null) {
 			if (this.xreftable.getReferencingClasses(referencedClassName) != null) {
 				this.xreftable.addReferencingClass(referencedClassName, this.className);
 			}
 		}
 	}
+
+	@Override
+	public void enterExpressionName(Java8Parser.ExpressionNameContext ctx) {
+		if (ctx.ambiguousName() != null) {
+			String className = ctx.ambiguousName().getText();
+			className = this.importedClasses.get(className);
+			if (className != null) {
+				if (this.xreftable.getReferencingClasses(className) != null) {
+					this.xreftable.addReferencingClass(className, this.className);
+				}
+			}
+		}
+	}
+
 }
