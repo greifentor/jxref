@@ -1,4 +1,4 @@
-package de.ollie.jxref.unreferenced;
+package testdata.unreferenced;
 
 import de.ollie.jxref.JXRef;
 import lombok.Data;
@@ -10,7 +10,7 @@ import lombok.Data;
  *
  */
 @Data
-public class Unreferenced {
+public class UnreferencedClass {
 
 	private int anAttribute;
 	private JXRef jxRef;

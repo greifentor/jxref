@@ -7,6 +7,7 @@ import static org.mockito.Mockito.verify;
 
 import static org.hamcrest.Matchers.equalTo;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -27,6 +28,7 @@ public class JXRefTest {
 	@InjectMocks
 	private JXRef unitUnderTest;
 
+	@Ignore("no good idea to use vital code folder for tests ;o)")
 	@Test
 	public void process_PassPathAndWriter_BuildsUpTheCrossReferencesAndPutItToTheWriter() {
 		// Prepare
@@ -64,6 +66,21 @@ public class JXRefTest {
 				"de.ollie.jxref.processor.JavaSourceFileProcessor");
 		expected.addReferencingClass("de.ollie.jxref.JXRef", "de.ollie.jxref.JXRef");
 		expected.addReferencingClass("de.ollie.jxref.JXRef", "de.ollie.jxref.unreferenced.Unreferenced");
+		// Run
+		this.unitUnderTest.process(new JXRefParameter().setPath(path).setVerbose(true), writer);
+		// Check
+		verify(writer, times(1)).write(new JXRefParameter().setPath(path).setVerbose(true), expected);
+	}
+
+	@Test
+	public void process_PassTestPathAndWriter_BuildsUpTheCrossReferencesAndPutItToTheWriter() {
+		// Prepare
+		JXRefConsoleWriter writer = mock(JXRefConsoleWriter.class);
+		String path = "src/test/java/testdata";
+		JXRefTable expected = new JXRefTable();
+		expected.addReferencingClass("testdata.MainClass", "testdata.MainClass");
+		expected.addReferencingClass("testdata.referenced.ReferencedClass", "testdata.MainClass");
+		expected.addClass("testdata.unreferenced.UnreferencedClass");
 		// Run
 		this.unitUnderTest.process(new JXRefParameter().setPath(path).setVerbose(true), writer);
 		// Check
