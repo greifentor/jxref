@@ -32,6 +32,19 @@ public class JXRefJava8ListenerForPass2 extends Java8BaseListener {
 	}
 
 	@Override
+	public void enterCastExpression(Java8Parser.CastExpressionContext ctx) {
+		if (ctx.referenceType() != null) {
+			String referencedClassName = ctx.referenceType().getText();
+			referencedClassName = this.importedClasses.get(referencedClassName);
+			if (referencedClassName != null) {
+				if (this.xreftable.getReferencingClasses(referencedClassName) != null) {
+					this.xreftable.addReferencingClass(referencedClassName, this.className);
+				}
+			}
+		}
+	}
+
+	@Override
 	public void enterClassDeclaration(Java8Parser.ClassDeclarationContext ctx) {
 		if (ctx.normalClassDeclaration() != null) {
 			for (int i = 0, leni = ctx.normalClassDeclaration().getChildCount(); i < leni; i++) {
@@ -122,15 +135,12 @@ public class JXRefJava8ListenerForPass2 extends Java8BaseListener {
 	public void enterPackageName(final Java8Parser.PackageNameContext ctx) {
 		if (this.packageName.isEmpty()) {
 			this.packageName = ctx.getText();
-
 			for (final String qualifiedClassName : this.xreftable.getClassNames()) {
 				if (qualifiedClassName.startsWith(this.packageName)) {
 					String className = qualifiedClassName;
-
 					while (className.contains(".")) {
 						className = className.substring(className.indexOf(".") + 1);
 					}
-
 					this.importedClasses.put(className, qualifiedClassName);
 				}
 			}
