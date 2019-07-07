@@ -30,9 +30,9 @@ Run program e. g. from project folder with:
 
 Call of JXRef: `<java-call> [Parameters] <SOURCE-PATH>`
 
-UX: `java -cp lib/antlr4-runtime-4.7.1.jar:target/jxref-0.0.1.jar de.ollie.jxref.JXRef -v <SOURCE-PATH>`
+UX: `java -cp lib/antlr4-runtime-4.7.1.jar:target/jxref-0.0.1.jar de.ollie.jxref.JXRef -v <SOURCE-PATHES>`
 
-Windows: `java -cp "lib\antlr4-runtime-4.7.1.jar;target\jxref-0.0.1.jar" de.ollie.jxref.JXRef -v <SOURCE-PATH>`
+Windows: `java -cp "lib\antlr4-runtime-4.7.1.jar;target\jxref-0.0.1.jar" de.ollie.jxref.JXRef -v <SOURCE-PATHES>`
 
 Example:
 
@@ -52,7 +52,8 @@ The following parameters could be passed to a call of the JXRef tool:
 
 ## Todos
 
-o T014 - References by casts should be processed correctly.
+x T014 - References by casts should be processed correctly.
+  `OLI 07.07.2019: Solved.`
 
 x T013 - Change list of referencing class to a set (will cover order problem and uniqueness).
   `OLI 03.07.2019: Solved.`
